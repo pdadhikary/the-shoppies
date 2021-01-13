@@ -1,8 +1,9 @@
 import React from "react";
 import ReactDom from "react-dom";
+import SearchBar from "./SearchBar";
 
-function Greeting() {
-    return <h1>The Shoppies!</h1>;
+function Shoppies() {
+    return <SearchBar></SearchBar>;
 }
 
-ReactDom.render(<Greeting />, document.getElementById("root"));
+ReactDom.render(<Shoppies />, document.getElementById("root"));
