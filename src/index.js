@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useMovieSystem } from "./useMovieSystem.js";
 import ReactDom from "react-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
@@ -18,46 +19,60 @@ import "./index.css";
 
 function Shoppies() {
     const [showModal, setShowModal] = useState(false);
+    const handleModalClose = () => setShowModal(false);
+    const handleModalShow = () => setShowModal(true);
 
-    const handleClose = () => setShowModal(false);
-    const handleShow = () => setShowModal(true);
+    const [searchQuery, setSearchQuery, movies, setMovies] = useMovieSystem();
+
+    const handleQueryChange = (newQuery) => {
+        setSearchQuery(newQuery);
+    };
+
+    const searchBar = (
+        <SearchBar
+            searchQuery={searchQuery}
+            handleQueryChange={handleQueryChange}
+            handlePageUpdate={setMovies}
+            defaultSearch={"Star Wars"}
+        />
+    );
+    const movieCart = <MovieCart />;
+    const movieMenu = <MovieMenu movies={movies} searchQuery={searchQuery} />;
 
     return (
         <>
-            <Modal show={showModal} onHide={handleClose}>
-                <Modal.Body>
-                    <MovieCart />
-                </Modal.Body>
+            <Modal show={showModal} onHide={handleModalClose}>
+                <Modal.Body>{movieCart}</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleModalClose}>
                         Close
                     </Button>
                 </Modal.Footer>
             </Modal>
+
             <Navbar bg="primary" variant="dark" sticky="top">
                 <Container>
                     <Navbar.Brand href="#home">
                         The Shoppies Awards
                     </Navbar.Brand>
-                    <Button className="icon mr-sm-2" onClick={handleShow}>
+                    <Button className="icon mr-sm-2" onClick={handleModalShow}>
                         <FontAwesomeIcon icon={faFilm} />
                         <span className="nav-counter">3</span>
                     </Button>
                 </Container>
             </Navbar>
+
             <Container>
                 <Row>
                     <Col sm={12} md={{ span: 6, offset: 3 }} className="mt-4">
-                        <SearchBar />
+                        {searchBar}
                     </Col>
                 </Row>
                 <Row>
                     <Col md={12} lg={6} className="mt-4">
-                        <MovieMenu />
+                        {movieMenu}
                     </Col>
-                    <Col className="mt-4 d-none d-lg-block">
-                        <MovieCart />
-                    </Col>
+                    <Col className="mt-4 d-none d-lg-block">{movieCart}</Col>
                 </Row>
             </Container>
         </>
