@@ -24,14 +24,10 @@ function Shoppies() {
 
     const [searchQuery, setSearchQuery, movies, setMovies] = useMovieSystem();
 
-    const handleQueryChange = (newQuery) => {
-        setSearchQuery(newQuery);
-    };
-
     const searchBar = (
         <SearchBar
             searchQuery={searchQuery}
-            handleQueryChange={handleQueryChange}
+            handleQueryChange={setSearchQuery}
             handlePageUpdate={setMovies}
             defaultSearch={"Star Wars"}
         />
