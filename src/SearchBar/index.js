@@ -8,14 +8,12 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import { getMovieList } from "../movieService.js";
 
-function SearchBar(props) {
-    const {
-        searchQuery,
-        defaultSearch,
-        handleQueryChange,
-        handlePageUpdate,
-    } = props;
-
+function SearchBar({
+    searchQuery,
+    defaultSearch,
+    handleQueryChange,
+    handlePageUpdate,
+}) {
     useEffect(() => {
         handleQueryChange(defaultSearch);
         getMovieList((newMovies) => {
