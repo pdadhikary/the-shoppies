@@ -21,8 +21,17 @@ function Shoppies() {
     const [showModal, setShowModal] = useState(false);
     const handleModalClose = () => setShowModal(false);
     const handleModalShow = () => setShowModal(true);
+    const [loading, setLoading] = useState(true);
 
-    const [searchQuery, setSearchQuery, movies, setMovies] = useMovieSystem();
+    const [
+        searchQuery,
+        setSearchQuery,
+        movies,
+        setMovies,
+        nominatedMovies,
+        nominateMovie,
+        removeMovie,
+    ] = useMovieSystem();
 
     const searchBar = (
         <SearchBar
@@ -32,8 +41,19 @@ function Shoppies() {
             defaultSearch={"Star Wars"}
         />
     );
-    const movieCart = <MovieCart />;
-    const movieMenu = <MovieMenu movies={movies} searchQuery={searchQuery} />;
+    const movieMenu = (
+        <MovieMenu
+            movies={movies}
+            handleNomination={nominateMovie}
+            isLoading={loading}
+        />
+    );
+    const movieCart = (
+        <MovieCart
+            nominatedMovies={nominatedMovies}
+            handleRemoval={removeMovie}
+        />
+    );
 
     return (
         <>
@@ -53,7 +73,9 @@ function Shoppies() {
                     </Navbar.Brand>
                     <Button className="icon mr-sm-2" onClick={handleModalShow}>
                         <FontAwesomeIcon icon={faFilm} />
-                        <span className="nav-counter">3</span>
+                        <span className="nav-counter">
+                            {nominatedMovies.length}
+                        </span>
                     </Button>
                 </Container>
             </Navbar>

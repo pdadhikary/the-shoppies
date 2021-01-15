@@ -3,7 +3,7 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
 
-function MovieMenu({ movies }) {
+function MovieMenu({ movies, handleNomination }) {
     const { movieList, numResults, page, query } = movies;
     return (
         <>
@@ -33,6 +33,10 @@ function MovieMenu({ movies }) {
                                     <Button
                                         variant="success"
                                         disabled={isNominated}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleNomination(id);
+                                        }}
                                     >
                                         Nominate
                                     </Button>

@@ -19,11 +19,11 @@ const nominations = [
     },
 ];
 
-function MovieCart() {
+function MovieCart({ nominatedMovies, handleRemoval }) {
     return (
         <>
             <h4>Nominations</h4>
-            <p>3 of 5 selected</p>
+            <p>{`${nominatedMovies.length} of 5 selected`}</p>
             <Table>
                 <thead>
                     <tr>
@@ -33,14 +33,19 @@ function MovieCart() {
                     </tr>
                 </thead>
                 <tbody>
-                    {nominations.map((entry, index) => {
-                        const { id, entryTitle } = entry;
+                    {nominatedMovies.map((entry, index) => {
+                        const { id, title, year } = entry;
                         return (
                             <tr key={id}>
                                 <td>{index + 1}</td>
-                                <td>{entryTitle}</td>
+                                <td>{`${title} (${year})`}</td>
                                 <td>
-                                    <Button variant="danger">
+                                    <Button
+                                        variant="danger"
+                                        onClick={() => {
+                                            handleRemoval(id);
+                                        }}
+                                    >
                                         <FontAwesomeIcon icon={faTimesCircle} />
                                     </Button>
                                 </td>
