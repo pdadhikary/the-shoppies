@@ -4,21 +4,6 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
-const nominations = [
-    {
-        id: "tt0076759",
-        entryTitle: "Star Wars: Episode IV - A New Hope (1977)",
-    },
-    {
-        id: "tt2488496",
-        entryTitle: "Star Wars: Episode VII - The Force Awakens (2015)",
-    },
-    {
-        id: "tt3748528",
-        entryTitle: "Rogue One: A Star Wars Story (2016)",
-    },
-];
-
 function MovieCart({ nominatedMovies, handleRemoval }) {
     return (
         <>
