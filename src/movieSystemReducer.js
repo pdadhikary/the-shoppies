@@ -1,3 +1,5 @@
+import store from "store";
+
 const MAX_NOMINAIONS = 5;
 
 export const actionTypes = {
@@ -54,6 +56,9 @@ export const movieSystemReducer = (state, action) => {
             );
             newNominatedMovies = [...newlyNominated, ...state.nominatedMovies];
         }
+
+        store.set("nominatedMovies", newNominatedMovies);
+
         return {
             ...state,
             movies: newMovies,
