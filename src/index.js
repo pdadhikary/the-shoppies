@@ -40,7 +40,7 @@ function Shoppies() {
             searchQuery={searchQuery}
             handleQueryChange={setSearchQuery}
             handlePageUpdate={setMovies}
-            defaultSearch={"Star Wars"}
+            defaultSearch={searchQuery ? searchQuery : "Star Wars"}
             isLoading={loading}
             setLoading={setLoading}
         />
