@@ -74,7 +74,11 @@ function Shoppies() {
                 <p>You have successfully chosen 5 movies to be nominated!</p>
 
                 {nominatedMovies.map((entry) => {
-                    return <li>{`${entry.title} (${entry.year})`}</li>;
+                    return (
+                        <li
+                            key={entry.id}
+                        >{`${entry.title} (${entry.year})`}</li>
+                    );
                 })}
             </MovieModal>
 
