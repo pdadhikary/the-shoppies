@@ -32,6 +32,9 @@ export const movieSystemReducer = (state, action) => {
                 isNominated: nominatedMovieIds.includes(entry.id),
             };
         });
+
+        store.set("searchQuery", state.searchQuery);
+
         return {
             ...state,
             movies: newMovies,
@@ -79,6 +82,8 @@ export const movieSystemReducer = (state, action) => {
                 isNominated: entry.id !== movieId && entry.isNominated,
             };
         });
+
+        store.set("nominatedMovies", newNominatedMovies);
 
         return {
             ...state,

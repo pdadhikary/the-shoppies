@@ -1,11 +1,16 @@
 import { useReducer } from "react";
 import { movieSystemReducer, actionTypes } from "./movieSystemReducer.js";
 
+import store from "store";
+
 export const useMovieSystem = (reducer = movieSystemReducer) => {
+    const prevSearchQuery = store.get("searchQuery");
+    const prevNominatedMovies = store.get("nominatedMovies");
+
     const defaultState = {
-        searchQuery: "",
+        searchQuery: prevSearchQuery ? prevSearchQuery : "",
         movies: { query: "", movieList: [], numResults: 0, page: 1 },
-        nominatedMovies: [],
+        nominatedMovies: prevNominatedMovies ? prevNominatedMovies : [],
         showCompletionModal: false,
     };
 
