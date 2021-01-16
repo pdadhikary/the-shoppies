@@ -7,7 +7,7 @@ A web application that aggregates moviegoer's top 5 picks to win The Shoppies!
 -   [OMDb RESTful API](http://www.omdbapi.com/)
 -   React
 -   Axios
--   React-Bootstrap
+-   React-Bootstrap & Font Awesome
 -   [Store.js](https://github.com/marcuswestin/store.js)
 
 # Planning Stage
@@ -26,4 +26,4 @@ I am going to use the Axios HTTP client instead of ES6 fetch(). I am planning on
 
 ### Styles and Misc
 
-React-Bootstrap for because its awesome! I'm also using Store.js library to store nominated movies in localStorage so that the data persists even when the user leaves the site.
+React-Bootstrap & Font Awesome because they're both awesome! I'm also using Store.js library to store nominated movies in localStorage so that the data persists even when the user leaves the site.
