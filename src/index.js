@@ -3,13 +3,13 @@ import { useMovieSystem } from "./useMovieSystem.js";
 import ReactDom from "react-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
-import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm } from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import MovieModal from "./MovieModal";
 import SearchBar from "./SearchBar";
 import MovieMenu from "./MovieMenu";
 import MovieCart from "./MovieCart";
@@ -18,9 +18,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 function Shoppies() {
-    const [showModal, setShowModal] = useState(false);
-    const handleModalClose = () => setShowModal(false);
-    const handleModalShow = () => setShowModal(true);
+    const [showNominations, setShowNominations] = useState(false);
+    const closeNominationModal = () => setShowNominations(false);
+    const openNominationModal = () => setShowNominations(true);
     const [loading, setLoading] = useState(true);
 
     const [
@@ -31,6 +31,8 @@ function Shoppies() {
         nominatedMovies,
         nominateMovie,
         removeMovie,
+        showCompletionModal,
+        closeCompletionModal,
     ] = useMovieSystem();
 
     const searchBar = (
@@ -39,13 +41,18 @@ function Shoppies() {
             handleQueryChange={setSearchQuery}
             handlePageUpdate={setMovies}
             defaultSearch={"Star Wars"}
+            isLoading={loading}
+            setLoading={setLoading}
         />
     );
     const movieMenu = (
         <MovieMenu
+            searchQuery={searchQuery}
             movies={movies}
             handleNomination={nominateMovie}
+            handlePageUpdate={setMovies}
             isLoading={loading}
+            setLoading={setLoading}
         />
     );
     const movieCart = (
@@ -55,26 +62,48 @@ function Shoppies() {
         />
     );
 
+    const nominatedCount = nominatedMovies.length;
+
     return (
         <>
-            <Modal show={showModal} onHide={handleModalClose}>
-                <Modal.Body>{movieCart}</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleModalClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <MovieModal
+                openModal={showCompletionModal}
+                closeModal={closeCompletionModal}
+                title="Nominations Complete!"
+            >
+                <p>You have successfully chosen 5 movies to be nominated!</p>
+
+                {nominatedMovies.map((entry) => {
+                    return <li>{`${entry.title} (${entry.year})`}</li>;
+                })}
+            </MovieModal>
+
+            <MovieModal
+                openModal={showNominations}
+                closeModal={closeNominationModal}
+                title=""
+            >
+                {movieCart}
+            </MovieModal>
 
             <Navbar bg="primary" variant="dark" sticky="top">
                 <Container>
                     <Navbar.Brand href="#home">
                         The Shoppies Awards
                     </Navbar.Brand>
-                    <Button className="icon mr-sm-2" onClick={handleModalShow}>
+                    <Button
+                        className="icon mr-sm-2"
+                        onClick={openNominationModal}
+                    >
                         <FontAwesomeIcon icon={faFilm} />
-                        <span className="nav-counter">
-                            {nominatedMovies.length}
+                        <span
+                            className={`nav-counter ${
+                                nominatedCount === 5
+                                    ? "bg-success"
+                                    : "bg-danger"
+                            }`}
+                        >
+                            {nominatedCount}
                         </span>
                     </Button>
                 </Container>

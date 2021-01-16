@@ -6,12 +6,13 @@ export const useMovieSystem = (reducer = movieSystemReducer) => {
         searchQuery: "",
         movies: { query: "", movieList: [], numResults: 0, page: 1 },
         nominatedMovies: [],
+        showCompletionModal: false,
     };
 
-    const [{ searchQuery, movies, nominatedMovies }, dispatch] = useReducer(
-        reducer,
-        defaultState
-    );
+    const [
+        { searchQuery, movies, nominatedMovies, showCompletionModal },
+        dispatch,
+    ] = useReducer(reducer, defaultState);
 
     const setSearchQuery = (newQuery) =>
         dispatch({ type: actionTypes.queryChange, payload: newQuery });
@@ -25,6 +26,9 @@ export const useMovieSystem = (reducer = movieSystemReducer) => {
     const removeMovie = (movieId) =>
         dispatch({ type: actionTypes.removeMovie, payload: movieId });
 
+    const closeCompletionModal = () =>
+        dispatch({ type: actionTypes.closeCompletionModal });
+
     return [
         searchQuery,
         setSearchQuery,
@@ -33,5 +37,7 @@ export const useMovieSystem = (reducer = movieSystemReducer) => {
         nominatedMovies,
         nominateMovie,
         removeMovie,
+        showCompletionModal,
+        closeCompletionModal,
     ];
 };

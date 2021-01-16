@@ -5,10 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 function MovieCart({ nominatedMovies, handleRemoval }) {
+    const nominatedCount = nominatedMovies.length;
     return (
         <>
             <h4>Nominations</h4>
-            <p>{`${nominatedMovies.length} of 5 selected`}</p>
+            <p>
+                <b
+                    className={`p-1 text-white ${
+                        nominatedCount === 5 ? "bg-success" : "bg-danger"
+                    }`}
+                >{`${nominatedCount} of 5`}</b>
+                {` selected`}
+            </p>
             <Table>
                 <thead>
                     <tr>

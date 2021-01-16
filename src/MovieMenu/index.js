@@ -2,15 +2,71 @@ import React from "react";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Pagination from "react-bootstrap/Pagination";
+import Spinner from "react-bootstrap/Spinner";
 
-function MovieMenu({ movies, handleNomination }) {
+import { getMovieList } from "../movieService";
+
+function MovieMenu({
+    searchQuery,
+    movies,
+    handleNomination,
+    handlePageUpdate,
+    isLoading,
+    setLoading,
+}) {
     const { movieList, numResults, page, query } = movies;
+
+    const maxPageNumber = Math.ceil(numResults / 10);
+    const handleNext = () => {
+        setLoading(true);
+        getMovieList(
+            (newMovies) => {
+                handlePageUpdate(newMovies);
+                setLoading(false);
+            },
+            query,
+            page + 1
+        );
+    };
+    const handlePrev = () => {
+        setLoading(true);
+        getMovieList(
+            (newMovies) => {
+                handlePageUpdate(newMovies);
+                setLoading(false);
+            },
+            query,
+            page - 1
+        );
+    };
+
     return (
         <>
             <h4>Movie Menu</h4>
             <p>
-                Showing results for "{query}"... {numResults} found
+                Showing results for "{query}"...{" "}
+                <b className={numResults > 0 ? "text-success" : "text-danger"}>
+                    {numResults}
+                </b>{" "}
+                movies found
             </p>
+
+            <Pagination size="sm" className="justify-content-center">
+                <Pagination.Prev
+                    onClick={handlePrev}
+                    disabled={page === 1 || isLoading}
+                />
+                <Pagination.Item className="pl-4 pr-4" active>
+                    {page}
+                </Pagination.Item>
+                <Pagination.Next
+                    onClick={handleNext}
+                    disabled={
+                        numResults === 0 || page === maxPageNumber || isLoading
+                    }
+                />
+            </Pagination>
+
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -20,46 +76,47 @@ function MovieMenu({ movies, handleNomination }) {
                         <th>Nominate</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {movieList.map((movie, index) => {
-                        const { id, title, year, isNominated } = movie;
+                {isLoading ? (
+                    <></>
+                ) : (
+                    <tbody>
+                        {movieList.map((movie, index) => {
+                            const { id, title, year, isNominated } = movie;
 
-                        return (
-                            <tr key={id}>
-                                <td>{index + 1}</td>
-                                <td>{title}</td>
-                                <td>{year}</td>
-                                <td>
-                                    <Button
-                                        variant="success"
-                                        disabled={isNominated}
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            handleNomination(id);
-                                        }}
-                                    >
-                                        Nominate
-                                    </Button>
-                                </td>
-                            </tr>
-                        );
-                    })}
-                </tbody>
+                            return (
+                                <tr key={id}>
+                                    <td>{10 * (page - 1) + (index + 1)}</td>
+                                    <td>{title}</td>
+                                    <td>{year}</td>
+                                    <td>
+                                        <Button
+                                            variant="success"
+                                            disabled={isNominated}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                handleNomination(id);
+                                            }}
+                                        >
+                                            Nominate
+                                        </Button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                )}
             </Table>
-            <Pagination className="justify-content-center">
-                <Pagination.First />
-                <Pagination.Prev />
-                <Pagination.Item active>{page}</Pagination.Item>
-                <Pagination.Item>{2}</Pagination.Item>
-                <Pagination.Item>{3}</Pagination.Item>
-                <Pagination.Item>{4}</Pagination.Item>
-                <Pagination.Item>{5}</Pagination.Item>
-
-                <Pagination.Ellipsis />
-                <Pagination.Item>{20}</Pagination.Item>
-                <Pagination.Next />
-                <Pagination.Last />
-            </Pagination>
+            {isLoading ? (
+                <div className="d-flex justify-content-center">
+                    <Spinner
+                        className="mt-4 mb-4"
+                        animation="border"
+                        variant="info"
+                    />
+                </div>
+            ) : (
+                <></>
+            )}
         </>
     );
 }

@@ -5,12 +5,12 @@ export const actionTypes = {
     updateMovies: "UPDATE_MOVIES",
     nominateMovie: "NOMINATE",
     removeMovie: "REMOVE",
+    closeCompletionModal: "CLOSE_COMPLETION",
 };
 
 export const movieSystemReducer = (state, action) => {
     if (action.type === actionTypes.queryChange) {
         const newQuery = action.payload;
-        // console.log(newQuery);
         return {
             ...state,
             searchQuery: newQuery,
@@ -18,6 +18,8 @@ export const movieSystemReducer = (state, action) => {
     }
 
     if (action.type === actionTypes.updateMovies) {
+        if (state.searchQuery.trim() === "") return state;
+
         const nominatedMovieIds = state.nominatedMovies.map(
             (movie) => movie.id
         );
@@ -28,7 +30,6 @@ export const movieSystemReducer = (state, action) => {
                 isNominated: nominatedMovieIds.includes(entry.id),
             };
         });
-        console.log(newMovies);
         return {
             ...state,
             movies: newMovies,
@@ -52,12 +53,12 @@ export const movieSystemReducer = (state, action) => {
                 (entry) => entry.id === newMovieId
             );
             newNominatedMovies = [...newlyNominated, ...state.nominatedMovies];
-            console.log({ newMovies, newNominatedMovies });
         }
         return {
             ...state,
             movies: newMovies,
             nominatedMovies: newNominatedMovies,
+            showCompletionModal: newNominatedMovies.length >= MAX_NOMINAIONS,
         };
     }
 
@@ -74,11 +75,17 @@ export const movieSystemReducer = (state, action) => {
             };
         });
 
-        console.log(`remove movie: with id ${movieId}`);
         return {
             ...state,
             movies: newMovies,
             nominatedMovies: newNominatedMovies,
+        };
+    }
+
+    if (action.type === actionTypes.closeCompletionModal) {
+        return {
+            ...state,
+            showCompletionModal: false,
         };
     }
 

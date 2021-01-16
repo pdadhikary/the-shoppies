@@ -13,21 +13,25 @@ function SearchBar({
     defaultSearch,
     handleQueryChange,
     handlePageUpdate,
+    isLoading,
+    setLoading,
 }) {
     useEffect(() => {
         handleQueryChange(defaultSearch);
         getMovieList((newMovies) => {
             handlePageUpdate(newMovies);
+            setLoading(false);
         }, defaultSearch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(`Searching "${searchQuery}"...`);
+        setLoading(true);
         handleQueryChange(searchQuery);
         getMovieList((newMovies) => {
             handlePageUpdate(newMovies);
+            setLoading(false);
         }, searchQuery);
     };
 
@@ -46,6 +50,7 @@ function SearchBar({
                         variant="outline-secondary"
                         type="subimit"
                         onClick={handleSubmit}
+                        disabled={isLoading}
                     >
                         <FontAwesomeIcon icon={faSearch} />
                     </Button>

@@ -3,7 +3,7 @@ const URL = "http://www.omdbapi.com/?";
 
 export const getMovieList = async (callback, query, page = 1) => {
     const q = query.trim();
-    let result = { query: "", movieList: [], numResults: 0, page: 1 };
+    let result = { query: query, movieList: [], numResults: 0, page: 1 };
 
     if (q) {
         const url = `${URL}apikey=${OMDB_API_KEY}&type=movie&s=${q}&page=${page}`;
