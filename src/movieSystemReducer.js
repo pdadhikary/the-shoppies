@@ -1,6 +1,6 @@
-import store from "store";
+import { MAX_NOMINATIONS } from "./constants.js";
 
-const MAX_NOMINAIONS = 5;
+import store from "store";
 
 export const actionTypes = {
     queryChange: "QUERY_CHANGE",
@@ -45,7 +45,7 @@ export const movieSystemReducer = (state, action) => {
         let newMovies = state.movies;
         let newNominatedMovies = state.nominatedMovies;
 
-        if (newNominatedMovies.length < MAX_NOMINAIONS) {
+        if (newNominatedMovies.length < MAX_NOMINATIONS) {
             const newMovieId = action.payload;
             const newMovieList = state.movies.movieList.map((movie) => {
                 return {
@@ -66,7 +66,7 @@ export const movieSystemReducer = (state, action) => {
             ...state,
             movies: newMovies,
             nominatedMovies: newNominatedMovies,
-            showCompletionModal: newNominatedMovies.length >= MAX_NOMINAIONS,
+            showCompletionModal: newNominatedMovies.length >= MAX_NOMINATIONS,
         };
     }
 

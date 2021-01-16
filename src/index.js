@@ -9,6 +9,8 @@ import { faFilm } from "@fortawesome/free-solid-svg-icons";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+import { MAX_NOMINATIONS } from "./constants.js";
+
 import MovieModal from "./MovieModal";
 import SearchBar from "./SearchBar";
 import MovieMenu from "./MovieMenu";
@@ -35,12 +37,13 @@ function Shoppies() {
         closeCompletionModal,
     ] = useMovieSystem();
 
+    const defaultSearch = "Star Wars";
     const searchBar = (
         <SearchBar
             searchQuery={searchQuery}
             handleQueryChange={setSearchQuery}
             handlePageUpdate={setMovies}
-            defaultSearch={searchQuery ? searchQuery : "Star Wars"}
+            defaultSearch={searchQuery ? searchQuery : defaultSearch}
             isLoading={loading}
             setLoading={setLoading}
         />
@@ -71,7 +74,10 @@ function Shoppies() {
                 closeModal={closeCompletionModal}
                 title="Nominations Complete!"
             >
-                <p>You have successfully chosen 5 movies to be nominated!</p>
+                <p>
+                    You have successfully chosen {MAX_NOMINATIONS} movies to be
+                    nominated!
+                </p>
 
                 {nominatedMovies.map((entry) => {
                     return (
@@ -102,7 +108,7 @@ function Shoppies() {
                         <FontAwesomeIcon icon={faFilm} />
                         <span
                             className={`nav-counter ${
-                                nominatedCount === 5
+                                nominatedCount === MAX_NOMINATIONS
                                     ? "bg-success"
                                     : "bg-danger"
                             }`}

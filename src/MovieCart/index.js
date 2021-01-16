@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
+import { MAX_NOMINATIONS } from "../constants.js";
+
 function MovieCart({ nominatedMovies, handleRemoval }) {
     const nominatedCount = nominatedMovies.length;
     return (
@@ -12,9 +14,11 @@ function MovieCart({ nominatedMovies, handleRemoval }) {
             <p>
                 <b
                     className={`p-1 text-white ${
-                        nominatedCount === 5 ? "bg-success" : "bg-danger"
+                        nominatedCount === MAX_NOMINATIONS
+                            ? "bg-success"
+                            : "bg-danger"
                     }`}
-                >{`${nominatedCount} of 5`}</b>
+                >{`${nominatedCount} of ${MAX_NOMINATIONS}`}</b>
                 {` selected`}
             </p>
             <Table>
