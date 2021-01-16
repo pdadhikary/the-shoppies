@@ -1,3 +1,5 @@
+import axois from "axios";
+
 import { OMDB_API_KEY, OMDB_URL } from "./constants.js";
 
 export const getMovieList = async (callback, query, page = 1) => {
@@ -7,8 +9,8 @@ export const getMovieList = async (callback, query, page = 1) => {
     if (q) {
         const url = `${OMDB_URL}apikey=${OMDB_API_KEY}&type=movie&s=${q}&page=${page}`;
         try {
-            const res = await fetch(url);
-            const data = await res.json();
+            const respone = await axois.get(url);
+            const data = respone.data;
             if (data.Response === "True") {
                 result.query = query;
                 result.movieList = data.Search.map((entry) => {
